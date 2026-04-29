@@ -1,0 +1,25 @@
+{
+  "name": "jpmc-deu-migration",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@cypress/webpack-preprocessor": "latest",
+    "aws-sdk": "^2.1693.0",
+    "dotenv": "^17.4.2",
+    "ts-loader": "latest"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^24.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "@types/node": "^25.6.0",
+    "cypress": "^15.14.1",
+    "typescript": "^6.0.3"
+  }
+}
