@@ -1,0 +1,29 @@
+{
+  "name": "jpmc-deu-migration",
+  "version": "1.0.0",
+  "description": "This repository contains an end-to-end automation framework built using Cypress, TypeScript, Cucumber (BDD), and AWS SDK, with HTML reporting via Mochawesome.",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@cypress/webpack-preprocessor": "latest",
+    "aws-sdk": "^2.1693.0",
+    "dotenv": "^17.4.2",
+    "ts-loader": "latest"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^24.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "@types/node": "^25.6.0",
+    "cypress": "^15.14.2",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2",
+    "typescript": "^6.0.3"
+  },
+  "keywords": []
+}
