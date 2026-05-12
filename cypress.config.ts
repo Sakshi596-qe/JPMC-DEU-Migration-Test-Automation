@@ -1,5 +1,7 @@
 import 'dotenv/config'
 import { defineConfig } from 'cypress'
+import type * as AWS from 'aws-sdk'
+
 import createBundler from '@bahmutov/cypress-esbuild-preprocessor'
 import {
   addCucumberPreprocessorPlugin,
@@ -17,8 +19,9 @@ export default defineConfig({
   },
 
   e2e: {
-    specPattern: '**/*.feature',
+    specPattern: 'cypress/e2e/**/*.feature',
     supportFile: false,
+    taskTimeout: 120000,
 
     async setupNodeEvents(on, config) {
       await addCucumberPreprocessorPlugin(on, config)
@@ -45,7 +48,6 @@ export default defineConfig({
 
           const s3 = new AWS.S3()
           const fileContent = fs.readFileSync(filePath)
-
           const params = {
             Bucket: bucket,
             Key: key,
@@ -76,6 +78,46 @@ export default defineConfig({
               }
             )
           })
+        },
+
+        async checkLambdaTriggered({ logGroupName, startTime }) {
+          const AWS = require('aws-sdk')
+          const cloudWatch = new AWS.CloudWatchLogs()
+
+          const response = await cloudWatch.filterLogEvents({
+            logGroupName,
+            startTime,
+          }).promise()
+
+          return Boolean(response.events && response.events.length > 0)
+        },
+
+        async checkLambdaErrorLog({
+          logGroupName,
+          startTime,
+          errorCode,
+        }) {
+          const AWS = require('aws-sdk')
+          const cloudWatch = new AWS.CloudWatchLogs()
+
+          try {
+            const response = await cloudWatch.filterLogEvents({
+              logGroupName,
+              startTime,
+              limit: 20,
+            }).promise()
+
+            if (!response.events) return false
+
+            return response.events.some((event: { message?: string }) =>
+              event.message && event.message.includes(errorCode)
+            )
+          } catch (error) {
+            if ((error as any).code === 'ResourceNotFoundException') {
+              return false
+            }
+            throw error
+          }
         },
       })
 
